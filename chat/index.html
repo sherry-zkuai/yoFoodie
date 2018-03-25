@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Group Chat</title>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded",function(){
+            var socket=io();
+            var usr;
+            // var window=window;
+            // var loginPage=$('.login.page');
+            // var chatPage=$('.chat.page');
+
+            document.getElementById("sendBtn").addEventListener("click",function(){
+                var usr=document.getElementById("username").value;
+                var txt=document.getElementById("sendtxt").value;
+                socket.emit('message',usr,txt);
+                document.getElementById("sendtxt").value="";
+                return false;
+            });
+            socket.on('sys',function(msg){
+                document.getElementById('messages').innerHTML+=('<p>'+msg+'</p>');
+            });
+            socket.on('newMessage',function(user,msg){
+                document.getElementById('messages').innerHTML+=('<p>'+user+':&emsp;'+msg+'</p>');
+            });
+    });
+
+    
+          
+        </script>
+</head>
+<body>
+    <div class="chat-wrap hide">
+        
+        <h2 id="room">Chat</h2>
+        <div id="chat-area" style="width:1000px;height:600px;background-color:#eef;overflow-y:scroll">
+            <div id="messages">
+            </div>
+        </div>
+        <div class="bottom" style="width:100%;height:30px;">
+            Name:<input type="text" id="username" style="width:150px;">
+            Message:<input type="text" id="sendtxt" style="width:500px">
+            <button id="sendBtn">Send</button>
+        </div>
+    </div>
+        
+        
+</body>
+</html>
+
